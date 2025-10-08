@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 Documentation
+    url: https://github.com/muragewanjohi/azima-flow/wiki
+    about: Check our documentation for common questions
+  - name: 💬 Discussions
+    url: https://github.com/muragewanjohi/azima-flow/discussions
+    about: Ask questions and discuss ideas with the community
+  - name: 🐛 Bug Report
+    url: https://github.com/muragewanjohi/azima-flow/issues/new?template=bug_report.md
+    about: Report a bug or issue
+  - name: ✨ Feature Request
+    url: https://github.com/muragewanjohi/azima-flow/issues/new?template=feature_request.md
+    about: Suggest a new feature or improvement

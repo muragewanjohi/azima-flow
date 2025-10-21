@@ -1,0 +1,29 @@
+{
+  "name": "azima-flow",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Azima.Store - Multi-tenant E-commerce SaaS Platform",
+  "workspaces": [
+    "store-flow",
+    "store-flow-storefront"
+  ],
+  "scripts": {
+    "dev:backend": "npm run dev --workspace=store-flow",
+    "dev:frontend": "npm run dev --workspace=store-flow-storefront",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "build:backend": "npm run build --workspace=store-flow",
+    "build:frontend": "npm run build --workspace=store-flow-storefront",
+    "build": "npm run build:backend && npm run build:frontend",
+    "test:backend": "npm run test --workspace=store-flow",
+    "test:frontend": "npm run test --workspace=store-flow-storefront",
+    "lint": "npm run lint --workspaces"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=20",
+    "npm": ">=10"
+  }
+}
+

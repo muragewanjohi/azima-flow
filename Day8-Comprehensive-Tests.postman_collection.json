@@ -1,0 +1,332 @@
+{
+  "info": {
+    "name": "Day 8 - Comprehensive Tenant Isolation Tests",
+    "description": "Complete test suite for Day 8 tenant isolation functionality",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Test Suite 1: Basic Tenant Resolution",
+      "item": [
+        {
+          "name": "1.1 Simple Tenant Context",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-tenant-subdomain",
+                "value": "johns-store",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9000/test-tenant",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "9000",
+              "path": ["test-tenant"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "1.2 Invalid Tenant",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-tenant-subdomain",
+                "value": "invalid-store",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9000/test-tenant",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "9000",
+              "path": ["test-tenant"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Test Suite 2: Store-Facing Products",
+      "item": [
+        {
+          "name": "2.1 Store Products (Mock)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-tenant-subdomain",
+                "value": "johns-store",
+                "type": "text"
+              },
+              {
+                "key": "x-publishable-api-key",
+                "value": "pk_test",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9000/store/products-scoped",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "9000",
+              "path": ["store", "products-scoped"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2.2 Store Products (No Tenant)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-publishable-api-key",
+                "value": "pk_test",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9000/store/products-scoped",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "9000",
+              "path": ["store", "products-scoped"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Test Suite 3: Admin-Facing Products",
+      "item": [
+        {
+          "name": "3.1 Admin Products (Mock)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-tenant-subdomain",
+                "value": "johns-store",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9000/test-admin",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "9000",
+              "path": ["test-admin"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3.2 Get Admin JWT Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@azima.store\",\n  \"password\": \"your-admin-password\"\n}",
+              "type": "application/json"
+            },
+            "url": {
+              "raw": "http://localhost:9000/admin/auth",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "9000",
+              "path": ["admin", "auth"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3.3 Real Admin Products (With JWT)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-tenant-subdomain",
+                "value": "johns-store",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_jwt_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9000/admin/products-scoped",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "9000",
+              "path": ["admin", "products-scoped"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3.4 Mock Admin Products (With Mock JWT)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-tenant-subdomain",
+                "value": "johns-store",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_jwt_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9000/admin/products-scoped-mock",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "9000",
+              "path": ["admin", "products-scoped-mock"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Test Suite 4: Cross-Tenant Isolation",
+      "item": [
+        {
+          "name": "4.1 Different Subdomain",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-tenant-subdomain",
+                "value": "different-store",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9000/test-tenant",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "9000",
+              "path": ["test-tenant"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "4.2 No Subdomain Header",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:9000/test-tenant",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "9000",
+              "path": ["test-tenant"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Test Suite 5: Error Handling",
+      "item": [
+        {
+          "name": "5.1 Invalid Subdomain Format",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-tenant-subdomain",
+                "value": "invalid@subdomain",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9000/test-tenant",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "9000",
+              "path": ["test-tenant"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "5.2 Empty Subdomain",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-tenant-subdomain",
+                "value": "",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9000/test-tenant",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "9000",
+              "path": ["test-tenant"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Test Suite 6: Mock Products",
+      "item": [
+        {
+          "name": "6.1 Mock Products (Simple)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-tenant-subdomain",
+                "value": "johns-store",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9000/test-products",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "9000",
+              "path": ["test-products"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "admin_jwt_token",
+      "value": "YOUR_JWT_TOKEN_HERE",
+      "type": "string"
+    }
+  ]
+}
